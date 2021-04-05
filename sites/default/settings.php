@@ -16,6 +16,21 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
  */
 include __DIR__ . "/settings.pantheon.php";
 
+// 301 Redirect from /old to /new
+// Check if Drupal or WordPress is running via command line
+if (($_SERVER['REQUEST_URI'] == '/node/113') && (php_sapi_name() != "cli")) {
+  header('HTTP/1.0 301 Moved Permanently');
+  header('Location: https://'. $_SERVER['HTTP_HOST'] . '/node/114');
+
+  // Name transaction "redirect" in New Relic for improved reporting (optional).
+  if (extension_loaded('newrelic')) {
+    newrelic_name_transaction("redirect");
+  }
+
+  exit();
+}
+
+
 /**
  * If there is a local settings file, then include it
  */
